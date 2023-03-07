@@ -77,7 +77,7 @@ func (s *simpleServer) Serve(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (lb *LoadBalancer) getNextAvailableServer() Server {
-	// weighted round-robin algorithm
+	// dynamic round-robin algorithm
 	server := lb.servers[lb.roundRobinCount%len(lb.servers)]
 	for i := 0; i < len(lb.servers); i++ {
 
@@ -86,7 +86,6 @@ func (lb *LoadBalancer) getNextAvailableServer() Server {
 		}
 	}
 	// round-robin algorithm
-	// server := lb.servers[lb.roundRobinCount%len(lb.servers)]
 	for !server.IsAlive() {
 		lb.roundRobinCount++
 		server = lb.servers[lb.roundRobinCount%len(lb.servers)]
